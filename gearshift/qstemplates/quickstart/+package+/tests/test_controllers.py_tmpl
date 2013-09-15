@@ -1,0 +1,81 @@
+"""test module for your application's pages
+"""
+import unittest
+import datetime
+from turbogears import testutil
+from ${package}.controllers import Root
+#if $identity != "none"
+from ${package}.model import User
+#end if
+
+
+class TestPages(testutil.TGTest):
+
+    root = Root
+
+    def test_method(self):
+        """The index method should return a datetime.datetime called 'now'"""
+        response = self.app.get('/')
+        assert isinstance(response.raw['now'], datetime.datetime)
+
+    def test_index_title(self):
+        """"The index page should have the right title."""
+        response = self.app.get('/')
+        assert "<title>Welcome to TurboGears</title>" in response.body
+
+#if $identity != "none"
+    def test_login_title(self):
+        """The login page should have the right title."""
+        response = self.app.get('/login')
+        assert "<title>Login</title>" in response
+        assert "Please log in." in response
+        assert "session cookies" not in response
+        assert "credentials" not in response
+        assert "not correct" not in response
+
+    def test_login_errors(self):
+        """The login page should display the right errors."""
+        login = '/login?user_name=nobody&password=wrong&login=Login'
+        response = self.app.get(login)
+        assert "<title>Login</title>" in response
+        assert "session cookies" in response
+        cookie = ', '.join(map(str, response.cookies_set.values()))
+        response = self.app.get(login, headers=dict(Cookie=cookie))
+        assert "<title>Login</title>" in response
+        assert "credentials" in response
+        assert "not correct" in response
+
+    def test_login_and_logout(self):
+        """Login with correct credentials and then logout."""
+        User(user_name = u"scott", password = u"tiger",
+            display_name = u"Bruce Scott",
+            email_address = u"scott@enterprise.com")
+        response = self.app.get('/')
+        assert "<title>Welcome to TurboGears</title>" in response
+        assert 'href="/login"' in response
+        assert 'href="/logout"' not in response
+        response = self.app.get('/login')
+        assert "<title>Login</title>" in response
+        assert 'Please log in.' in response
+        cookie = ', '.join(map(str, response.cookies_set.values()))
+        login = '/login?user_name=scott&password=tiger&login=Login'
+        headers = dict(Cookie=cookie)
+        response = self.app.get(login, headers=headers, status=302)
+        location = response.headers['Location']
+        response = self.app.get(location, headers=headers)
+        assert "<title>Welcome to TurboGears</title>" in response
+        assert "Welcome Bruce Scott" in response
+        assert 'href="/login"' not in response
+        assert 'href="/logout"' in response
+        response = self.app.get('/', headers=headers)
+        assert "<title>Welcome to TurboGears</title>" in response
+        assert "Welcome Bruce Scott" in response
+        assert 'href="/login"' not in response
+        assert 'href="/logout"' in response
+        response = self.app.get('/logout', headers=headers, status=302)
+        location = response.headers['Location']
+        response = self.app.get(location, headers=headers)
+        assert "<title>Welcome to TurboGears</title>" in response
+        assert 'href="/login"' in response
+        assert 'href="/logout"' not in response
+#end if

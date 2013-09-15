@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+
+<head py:match="head" py:attrs="select('@*')">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+    <title py:replace="''">Your title goes here</title>
+    <link py:for="css in tg_css" py:replace="ET(css.display())" />
+    <link py:for="js in tg_js_head" py:replace="ET(js.display())" />
+    <meta py:replace="select('*')" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/static/css/style.css')}" />
+</head>
+
+<body py:match="body" py:attrs="select('@*')">
+
+    <div py:for="js in tg_js_bodytop" py:replace="ET(js.display())" />
+    <div id="upbg"></div>
+    <div id="outer">
+        <div id="header">
+            <div id="headercontent">
+                <h1 py:content="'TurboGears %s' % tg.tg_version">TurboGears version</h1>
+                <h2>The web mega framework</h2>
+            </div>
+        </div>
+
+        <div py:if="tg.config('tools.identity.on') and not defined('logging_in')" id="pagelogin">
+            <span py:if="tg.identity.anonymous">
+                <a href="${tg.url(tg.identity.login_url)}">Login</a>
+            </span>
+            <span py:if="not tg.identity.anonymous">
+                Welcome ${tg.identity.user.display_name or tg.identity.user.user_name}.
+                <a href="${tg.url('/logout')}">Logout</a>
+            </span>
+
+            <form method="post" action="">
+                <input type="text" class="text" maxlength="64" name="keywords" />
+                <input type="submit" class="submit" value="Search" />
+            </form>
+        </div>
+
+        <div id="headerpic"></div>
+
+        <div id="menu">
+        <!-- HINT: Set the class of any menu link below to "active" to make it appear active -->
+            <ul>
+                <li><a href="/" class="active">Welcome</a></li>
+                <li><a href="/#model">Model</a></li>
+                <li><a href="/#view">View</a></li>
+                <li><a href="/#controller">Controller</a></li>
+
+                <li><a href="/#about">About</a></li>
+                <li><a href="http://docs.turbogears.org/GettingHelp">Contact</a></li>
+            </ul>
+        </div>
+        <div id="menubottom"></div>
+
+        <div id="content">
+            <div id="status_block" class="flashbox"
+                py:if="value_of('tg_flash', None)" py:content="tg_flash"></div>
+            <div py:replace="select('*|text()')" />
+        <!-- global content ends here -->
+        </div>
+
+        <div id="footer">
+            <div class="left">
+                TurboGears is an open source front-to-back web development framework
+                written in Python<br/>
+                Copyright &copy; 2005 - 2008 Kevin Dangoor et al.<br/>
+                Design adapted from a work by <a href="http://www.nodethirtythree.com/">NodeThirtyThree Design</a>
+            </div>
+            <div class="right">
+                <a href="http://www.turbogears.org/"
+                    title="TurboGears ${tg.tg_version} is propelling this web site!"
+                    ><img src="${tg.url('/static/images/under_the_hood_blue.png')}"
+                    alt="TurboGears under the hood" /></a>
+            </div>
+        </div>
+    </div> <!-- end outer -->
+    <div py:for="js in tg_js_bodybottom" py:replace="ET(js.display())" />
+
+</body>
+
+</html>

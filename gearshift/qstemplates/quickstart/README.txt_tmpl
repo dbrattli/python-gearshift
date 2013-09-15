@@ -1,0 +1,4 @@
+${project}
+
+This is a GearShift (http://code.google.com/p/python-gearshift project. It can
+ be started by running the start-${package}.py script.

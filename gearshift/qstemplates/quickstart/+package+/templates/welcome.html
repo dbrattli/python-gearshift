@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<xi:include href="master.html" />
+<?python
+from gearshift.i18n.format import format_date
+def dateandtime(d):
+    return format_date(d, format="full")
+?>
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+    <title>Welcome to GearShift</title>
+</head>
+<body>
+
+    <!--! template functions -->
+    <span py:def="code(codestring)" py:content="codestring" class="code" />
+
+    <!-- Normal content: Stuff that's not in the left or right column. -->
+    <div id="normalcontent">
+        <h3 id="turbogears"><strong>GearShift</strong>
+            <sup py:content="tg.tg_version">tg version</sup>
+            <span>is propelling this web site</span>
+            <a href="#turbogears" class="anchor">#</a></h3>
+        <div class="contentarea">
+            <!-- Normal content area start -->
+            <img src="/static/images/pic1.jpg" class="left image"
+                alt="A chinese lion statue" />
+            <p>GearShift <sup py:content="tg.tg_version">tg version</sup> is
+            the latest in the line of regular, reliable releases from the
+            GearShift team. GearShift follows a component-based development
+            model that is built on best-of-breed Python tools. With it, you can
+            create a database-driven, ready-to-extend application in minutes.
+            All with designer friendly templates, easy AJAX on the browser side
+            and on the server side, not a single SQL query in sight with code
+            that is as natural as writing a function.</p>
+
+            <p>See it for yourself in the
+            <a href="http://docs.turbogears.org/1.0/TGScreencasts">20 Minute
+            Wiki screencast</a>. Or try it for yourself with the
+            <a href="http://docs.turbogears.org/1.0/Wiki20/Page1">20 Minute
+            Wiki tutorial</a>.</p>
+
+            <p> If you create something cool, please
+            <a href="http://groups.google.com/group/turbogears">let people
+            know</a>, and consider contributing something back to the
+            <a href="http://docs.turbogears.org/Contributing">community</a>.</p>
+
+            <p>GearShift: the rapid web development mega framework you've been
+            looking for.</p>
+            <!-- Normal content area end -->
+        </div>
+    </div>
+
+    <div class="divider1"></div>
+
+    <div id="primarycontainer">
+        <div id="primarycontent">
+
+            <div class="post">
+                <h4 id="post1">GearShift works on your machine
+                    <a href="#post1" class="anchor">#</a></h4>
+                <div class="contentarea">
+                    <p>If you can read this page it means you have successfully
+                    quickstarted your GearShift application. Thank you for
+                    choosing GearShift.</p>
+
+                    <ul class="controls">
+                        <li><a href="#" class="printerfriendly">Printer
+                            Friendly</a></li>
+                        <li><a href="#" class="comments">Comments (18)</a></li>
+                        <li><a href="#" class="more">Read More</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="divider2"></div>
+
+            <div class="post">
+                <h4 id="model">Model <a href="#model" class="anchor">#</a></h4>
+                <div class="contentarea">
+                    <p><a href="http://docs.turbogears.org/1.0/GettingStarted/DefineDatabase"
+                    >Design models</a> in the ${code('model.py')} file.<br/>
+                    Edit ${code('dev.cfg')} to <a
+                    href="http://docs.turbogears.org/1.0/GettingStarted/UseDatabase"
+                    >use a different backend</a>, or start with a pre-configured
+                    SQLite database.<br/>
+                    Use the tool ${code('tg-admin sql create')} to create the
+                    database tables.</p>
+                </div>
+            </div>
+            <div class="post">
+                <h4 id="view">View <a href="#view" class="anchor">#</a></h4>
+                <div class="contentarea">
+                    <p> Edit <a
+                    href="http://docs.turbogears.org/1.0/GettingStarted/Kid"
+                    >html-like templates</a> in the ${code('/templates')}
+                    folder;<br/>
+                    Put all <a href="http://docs.turbogears.org/1.0/StaticFiles"
+                    >static contents</a> in the ${code('/static')} folder.</p>
+                </div>
+            </div>
+            <div class="post">
+                <h4 id="controller">Controller <a href="#controller"
+                    class="anchor">#</a></h4>
+                <div class="contentarea">
+                    <p> Edit ${code('controllers.py')} and <a
+                    href="http://docs.turbogears.org/1.0/GettingStarted/BigPicture"
+                    >build your website structure</a> with the simplicity of
+                    Python objects. <br/>
+                    GearShift will automatically reload itself when you modify
+                    your project. </p>
+                </div>
+            </div>
+        <!-- primary content ends here -->
+        </div>
+    <!-- primary container ends here -->
+    </div>
+
+    <div id="secondarycontent">
+        <div class="box">
+            <h4 id="about">Learn more <a href="#about" class="anchor">#</a></h4>
+            <div class="contentarea">
+                <img src="/static/images/pic2.jpg" class="left image"
+                    alt="Random foliage" />
+                <p>Want to learn more about GearShift and take part in its
+                development?</p>
+                <ul class="linklist">
+                    <li><a href="http://www.turbogears.org/"
+                        >Official website</a></li>
+                    <li><a href="http://docs.turbogears.org/"
+                        >Documentation</a></li>
+                    <li><a href="http://trac.turbogears.org/">Trac
+                        (bugs/suggestions)</a></li>
+                    <li><a href="http://groups.google.com/group/turbogears"
+                        >Mailing list</a></li>
+                </ul>
+                <span py:replace="dateandtime(now)">current time</span>
+            </div>
+        </div>
+    <!-- secondary content ends here -->
+    </div>
+
+</body>
+</html>

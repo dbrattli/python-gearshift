@@ -1,0 +1,67 @@
+"""Unit test cases for testing you application's model classes.
+
+If your project uses a database, you should set up database tests similar to
+what you see below.
+
+Be sure to set the ``db_uri`` in the ``test.cfg`` configuration file in the
+top-level directory of your project to an appropriate uri for your testing
+database. SQLite is a good choice for testing, because you can use an in-memory
+database which is very fast and the data in it has to be boot-strapped from
+scratch every time, so the tests are independant of any pre-existing data.
+
+You can also set the ``db_uri``directly in this test file but then be sure
+to do this before you import your model, e.g.::
+
+    from turbogears import testutil, database
+    database.set_db_uri("sqlite:///:memory:")
+    from ${package}.model import YourModelClass, User, ...
+"""
+
+from turbogears.testutil import DBTest
+
+#if $identity != "none"
+# import the User class defined in the model so we can use it here
+from ${package}.model import User
+#if $sqlalchemy == 'True'
+from turbogears.database import session
+#end if
+
+class TestUser(DBTest):
+
+    def test_creation(self):
+        """Object creation should set the name."""
+        obj = User(user_name = u"creosote",
+                email_address = u"spam@python.not",
+                display_name = u"Mr Creosote",
+                password = u"Wafer-thin Mint")
+#if $sqlalchemy == 'True'
+        # mark object as 'to be saved'
+        session.save(obj)
+        # flush marked obj to db
+        session.flush()
+        retrieved_user = User.by_email_address(u'spam@python.not')
+        assert retrieved_user, \
+            'User should have been found by email address'
+
+        assert retrieved_user.user_name == u'creosote', \
+            "User name should have been creosote, not '%s'" % retrieved_user.user_name
+#end if
+        assert obj.display_name == u"Mr Creosote"
+
+#elif $identity == "none"
+# we commented this example because you did not choose
+# use identity. This is still an example of how you can
+# manipulate you model
+# import the User class defined in the model so we can use it here
+# from ${package}.model import User
+
+# class TestUser(DBTest):
+#
+#     def test_creation(self):
+#         """Object creation should set the name."""
+#         obj = User(user_name = "creosote",
+#                 email_address = "spam@python.not",
+#                 display_name = "Mr Creosote",
+#                 password = "Wafer-thin Mint")
+#         assert obj.display_name == "Mr Creosote"
+#end if
